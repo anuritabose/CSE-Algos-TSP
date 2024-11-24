@@ -2,6 +2,8 @@ import argparse
 import os
 import math
 from heapq import heappop, heappush
+from collections import defaultdict, deque
+import time
 
 
 def parse_tsp_file(file_path):
@@ -10,7 +12,7 @@ def parse_tsp_file(file_path):
     Args:
         file_path (str): Path to the .tsp file.
     Returns:
-        list: List of tuples representing coordinates [(x1, y1), (x2, y2), ...].
+        list: List of tuples representing coordinates of the locations [(x1, y1), (x2, y2), ...].
     """
     coordinates = []
     with open(file_path, 'r') as file:
@@ -71,7 +73,6 @@ def preorder_traversal(mst, n):
     Returns:
         list: Preorder traversal tour of the MST.
     """
-    from collections import defaultdict, deque
 
     # Build adjacency list
     adj = defaultdict(list)
@@ -119,13 +120,13 @@ def approximation_tsp(coordinates):
     Returns:
         tuple: (approx_cost, approx_tour)
     """
-    # Step 1: Construct MST
+    # Constructing MST
     mst = construct_mst(coordinates)
 
-    # Step 2: Perform preorder traversal of the MST
+    # Performing preorder traversal of the MST
     tour = preorder_traversal(mst, len(coordinates))
 
-    # Step 3: Calculate the cost of the tour
+    # Calculating the cost of the tour
     cost = calculate_cost(tour, coordinates)
 
     return cost, tour
@@ -145,18 +146,31 @@ def main():
     # Parse the TSP file
     coordinates = parse_tsp_file(file_name)
 
+    # Start measuring time before running the algorithm
+    start_time = time.time()
+
     # Solve the TSP using the Approximation algorithm
     cost, tour = approximation_tsp(coordinates)
+
+    # End time
+    end_time = time.time() - start_time
+
+    # Check if a full tour is computed
+    full_tour = len(tour) == len(coordinates)
+
+    # Print elapsed time and tour completion status
+    print(f"Time taken: {end_time:.6f} seconds")
+    print(f"Full tour computed: {full_tour}")
 
     # Generate the output filename
     instance_name = os.path.splitext(os.path.basename(file_name))[0].lower()
     seed = args.s
-    output_file = f"{instance_name}_approx_{seed}.sol"
+    output_file = f"output/approximate/{instance_name}_approx_{seed}.sol"
 
     # Write the results to the output file
     with open(output_file, "w") as f:
         f.write(f"{cost}\n")
-        f.write(",".join(map(str, tour)))
+        f.write(",".join(map(str, [node + 1 for node in tour])))
 
 
 if __name__ == "__main__":
