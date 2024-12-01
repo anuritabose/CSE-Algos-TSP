@@ -38,7 +38,7 @@ def run_experiments(city_file, cutoff, num_runs=15, output_dir="output/local_sea
         total_time += time_taken
         total_solution_quality += best_distance
 
-        # Update the best solution if necessary
+        # Update the best solution
         if best_distance < best_solution_quality:
             best_solution_quality = best_distance
             best_route = route
