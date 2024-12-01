@@ -4,6 +4,8 @@ import time
 from approximate import approximation_tsp
 from brute_force import TSPSolver
 from local_search import tsp_local_search
+import sys
+
 
 
 def parse_tsp_file(file_path):
@@ -15,6 +17,13 @@ def parse_tsp_file(file_path):
         list: List of tuples representing coordinates of the locations [(x1, y1), (x2, y2), ...].
     """
     coordinates = []
+    if getattr(sys, 'frozen', False):  # Running as an executable
+        project_root = os.path.dirname(os.path.dirname(sys.executable))
+    else:  # Running as a script
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    file_path = os.path.join(project_root,file_path)
+    print()
     with open(file_path, 'r') as file:
         lines = file.readlines()
 
@@ -68,11 +77,21 @@ def main():
     algorithm = args.alg
 
     # Prepare the output directory
+    if getattr(sys, 'frozen', False):  # Running as an executable
+        project_root = os.path.dirname(os.path.dirname(sys.executable))
+    else:  # Running as a script
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     output_dir = f"output_exec/{algorithm}"
     instance_name = os.path.splitext(os.path.basename(tsp_file))[0].lower()
-
+    output_dir = os.path.join(project_root, output_dir)
     if algorithm == "BF":
         # Brute Force Algorithm
+        if getattr(sys, 'frozen', False):  # Running as an executable
+            project_root = os.path.dirname(os.path.dirname(sys.executable))
+        else:  # Running as a script
+            project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        tsp_file = os.path.join(project_root,tsp_file)
         solver = TSPSolver(tsp_file, cutoff_time)
         solver.solve()
 

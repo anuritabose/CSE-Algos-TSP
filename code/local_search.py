@@ -3,6 +3,7 @@ import math
 import random
 import time
 import os
+import sys
 
 
 def parse_tsp_file(file_path):
@@ -14,6 +15,14 @@ def parse_tsp_file(file_path):
         list: List of tuples representing coordinates of the locations [(x1, y1), (x2, y2), ...].
     """
     coordinates = []
+
+    if getattr(sys, 'frozen', False):  # Running as an executable
+        project_root = os.path.dirname(os.path.dirname(sys.executable))
+    else:  # Running as a script
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    file_path = os.path.join(project_root,file_path)
+    print(file_path)
     with open(file_path, 'r') as file:
         lines = file.readlines()
 
