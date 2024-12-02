@@ -123,7 +123,7 @@ class TSPSolver:
         print(f"Solution quality: {self.best_tour_length:.2f}")
         print(f"Full tour computed: {'No' if self.time_exceeded else 'Yes'}")
 
-        self.write_solution("BF")
+        # self.write_solution("BF")
 
 def main() -> None:
     if len(sys.argv) != 7:
