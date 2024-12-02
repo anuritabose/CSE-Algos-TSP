@@ -1,4 +1,4 @@
 Best Distance: 3710782.00
 Route: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,23,27,21,30,28,29,25,26,22,24
-Time Taken: 60.001181 seconds
+Time Taken: 30.004972 seconds
 Full Tour: No
